@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using pawmart_jc.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddDbContext<Pawmart_BDContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
 var app = builder.Build();
 
