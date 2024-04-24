@@ -21,5 +21,15 @@ namespace pawmart_jc.Models
         public string? OtrasCaracteristicas { get; set; }
 
         public virtual ICollection<DetallesDelPedido> DetallesDelPedidos { get; set; }
+
+        // Método para convertir los datos binarios de la imagen en una cadena Base64
+        public string ImagenBase64()
+        {
+            if (Imagen != null && Imagen.Length > 0)
+            {
+                return $"data:image/jpg;base64,{Convert.ToBase64String(Imagen)}";
+            }
+            return string.Empty;
+        }
     }
 }
