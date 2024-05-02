@@ -9,87 +9,90 @@ using pawmart_jc.Models;
 
 namespace pawmart_jc.Controllers
 {
-    public class ClientesController : Controller
+    public class PedidoesController : Controller
     {
         private readonly Pawmart_BDContext _context;
 
-        public ClientesController(Pawmart_BDContext context)
+        public PedidoesController(Pawmart_BDContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
+        // GET: Pedidoes
         public async Task<IActionResult> Index()
         {
-              return _context.Clientes != null ? 
-                          View(await _context.Clientes.ToListAsync()) :
-                          Problem("Entity set 'Pawmart_BDContext.Clientes'  is null.");
+            var pawmart_BDContext = _context.Pedidos.Include(p => p.IdClienteNavigation);
+            return View(await pawmart_BDContext.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+        // GET: Pedidoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Clientes == null)
+            if (id == null || _context.Pedidos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
+            var pedido = await _context.Pedidos
+                .Include(p => p.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
+            if (pedido == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(pedido);
         }
 
-        // GET: Clientes/Create
+        // GET: Pedidoes/Create
         public IActionResult Create()
         {
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Pedidoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,CorreoElectronico,Contraseña,DireccionEnvio,OtrosDatosContacto")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("Id,IdCliente,FechaHoraPedido")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
+                _context.Add(pedido);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedido.IdCliente);
+            return View(pedido);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Pedidoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Clientes == null)
+            if (id == null || _context.Pedidos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
+            var pedido = await _context.Pedidos.FindAsync(id);
+            if (pedido == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedido.IdCliente);
+            return View(pedido);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Pedidoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,CorreoElectronico,Contraseña,DireccionEnvio,OtrosDatosContacto")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdCliente,FechaHoraPedido")] Pedido pedido)
         {
-            if (id != cliente.Id)
+            if (id != pedido.Id)
             {
                 return NotFound();
             }
@@ -98,12 +101,12 @@ namespace pawmart_jc.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
+                    _context.Update(pedido);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.Id))
+                    if (!PedidoExists(pedido.Id))
                     {
                         return NotFound();
                     }
@@ -114,51 +117,51 @@ namespace pawmart_jc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", pedido.IdCliente);
+            return View(pedido);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Pedidoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Clientes == null)
+            if (id == null || _context.Pedidos == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
+            var pedido = await _context.Pedidos
+                .Include(p => p.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cliente == null)
+            if (pedido == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(pedido);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Pedidoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Clientes == null)
+            if (_context.Pedidos == null)
             {
-                return Problem("Entity set 'Pawmart_BDContext.Clientes'  is null.");
+                return Problem("Entity set 'Pawmart_BDContext.Pedidos'  is null.");
             }
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente != null)
+            var pedido = await _context.Pedidos.FindAsync(id);
+            if (pedido != null)
             {
-                _context.Clientes.Remove(cliente);
+                _context.Pedidos.Remove(pedido);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool PedidoExists(int id)
         {
-          return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
-     
-     
+          return (_context.Pedidos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
