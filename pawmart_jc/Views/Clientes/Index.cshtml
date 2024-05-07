@@ -1,117 +1,75 @@
 ﻿@model IEnumerable<pawmart_jc.Models.Cliente>
 
-@{
-    ViewData["Title"] = "Índice";
-}
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2; /* Fondo gris claro */
-            color: #333; /* Color de texto principal */
+            background-color: #f2f2f2;
         }
 
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff; /* Fondo blanco */
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
 
-        h1 {
-            font-size: 36px;
-            color: #6ab04c; /* Texto verde Hierba */
-            margin-bottom: 20px;
-            text-align: center;
+        .btn {
+            margin-right: 5px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+        .table th, .table td {
+            vertical-align: middle;
         }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd; /* Borde inferior gris claro */
-            word-wrap: break-word; /* Ajuste de texto para evitar desbordamiento */
-        }
-
-        th {
-            background-color: #f2f2f2; /* Fondo gris claro */
-        }
-
-      
-
-          
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Índice</h1>
-        <p>
-            <a asp-action="Create">Crear Nuevo</a>
-        </p>
-        <table>
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <div class="text-right mb-3">
+            <a class="btn btn-success" href="@Url.Action("Create")">Crear Nuevo Cliente</a>
+        </div>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>
-                        Nombre
-                    </th>
-                    <th>
-                        Apellido
-                    </th>
-                    <th>
-                        Correo Electrónico
-                    </th>
-                    <th>
-                        Dirección de Envío
-                    </th>
-                    <th>
-                        Otros Datos de Contacto
-                    </th>
-                    <th></th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo Electrónico</th>
+                    <th>Dirección de Envío</th>
+                    <th>Otros Datos de Contacto</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var cliente in Model)
                 {
                     <tr>
+                        <td>@cliente.Nombre</td>
+                        <td>@cliente.Apellido</td>
+                        <td>@cliente.CorreoElectronico</td>
+                        <td>@cliente.DireccionEnvio</td>
+                        <td>@cliente.OtrosDatosContacto</td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Apellido)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CorreoElectronico)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DireccionEnvio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OtrosDatosContacto)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                            <form asp-action="Edit" asp-route-id="@cliente.Id" method="get" class="d-inline">
+                                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
+                            </form>
+                            <form asp-action="Details" asp-route-id="@cliente.Id" method="get" class="d-inline">
+                                <button type="submit" class="btn btn-info btn-sm">Detalles</button>
+                            </form>
+                            <form asp-action="Delete" asp-route-id="@cliente.Id" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este cliente?');" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
-                } 
+                }
             </tbody>
         </table>
     </div>
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 Pawmart JC. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
-
-
