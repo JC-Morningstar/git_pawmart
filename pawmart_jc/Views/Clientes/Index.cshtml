@@ -1,65 +1,117 @@
 ﻿@model IEnumerable<pawmart_jc.Models.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Índice";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2; /* Fondo gris claro */
+            color: #333; /* Color de texto principal */
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CorreoElectronico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contraseña)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DireccionEnvio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OtrosDatosContacto)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorreoElectronico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Contraseña)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DireccionEnvio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OtrosDatosContacto)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff; /* Fondo blanco */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #6ab04c; /* Texto verde Hierba */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd; /* Borde inferior gris claro */
+            word-wrap: break-word; /* Ajuste de texto para evitar desbordamiento */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Fondo gris claro */
+        }
+
+      
+
+          
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Índice</h1>
+        <p>
+            <a asp-action="Create">Crear Nuevo</a>
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Apellido
+                    </th>
+                    <th>
+                        Correo Electrónico
+                    </th>
+                    <th>
+                        Dirección de Envío
+                    </th>
+                    <th>
+                        Otros Datos de Contacto
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Apellido)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DireccionEnvio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OtrosDatosContacto)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                } 
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+
